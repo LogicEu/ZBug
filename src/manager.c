@@ -6,12 +6,10 @@ typedef struct ZBugPair {
     size_t size;
 } ZBugPair;
 
-typedef struct ZBugManager {
+static struct ZBugManager {
     size_t size, used, allocated;
     ZBugPair* pairs;
-} ZBugManager;
-
-static ZBugManager zbug_manager;
+} zbug_manager;
 
 static ZBugPair* zbug_find_pair(void* ptr)
 {

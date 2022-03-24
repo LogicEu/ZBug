@@ -48,11 +48,25 @@ slib() {
     $cc ${flags[*]} ${inc[*]} -c $src && ar -crv $name.a *.o && rm *.o
 }
 
+cleanf() {
+    if [ -f $1 ]; then
+        rm $1 && echo "removed '$1'"
+    fi
+}
+
+clean() {
+    cleanf $name.so
+    cleanf $name.dylib
+    cleanf $name.a
+}
+
 case "$1" in
     "-d")
         dlib;;
     "-s")
         slib;;
+    "-clean")
+        clean;;
     *)
         fail_op;;
 esac
