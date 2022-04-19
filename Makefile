@@ -8,9 +8,11 @@ CC=gcc
 NAME=libzbug
 SRC=src/*.c
 
-CFLAGS=$(STD) $(WFLAGS) $(OPT) $(IDIR)
-OS=$(shell uname -s)
+SCRIPT=build.sh
 
+CFLAGS=$(STD) $(WFLAGS) $(OPT) $(IDIR)
+
+OS=$(shell uname -s)
 ifeq ($(OS),Darwin)
 	OSFLAGS=-dynamiclib
 	LIB=$(NAME).dylib
@@ -20,11 +22,17 @@ else
 endif
 
 $(NAME).a: $(SRC)
-	$(CC) $(CFLAGS) -c $(SRC) && ar -crv $(NAME).a *.o && rm *.o
+	$(CC) $(CFLAGS) -c $(SRC) && ar -cr $(NAME).a *.o && rm *.o
 
 shared: $(SRC)
 	$(CC) -o $(LIB) $(SRC) $(CFLAGS) $(OSFLAGS)
 
-clean:
-	./build.sh -clean
-	
+clean: $(SCRIPT)
+	./$^ $@
+
+install: $(SCRIPT)
+	./$^ $@
+
+uninstall: $(SCRIPT)
+	./$^ $@
+
